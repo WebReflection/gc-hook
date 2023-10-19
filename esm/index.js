@@ -12,7 +12,7 @@ const handler = Object.create(null);
  * @param {H} hold the reference to retain in memory until the returned value is not collected.
  * @param {(held:H) => void} onGarbageCollected the callback to invoke once the returned value is collected.
  * @param {{return?:R, token?:H}} [options] optionally override the returned value or the token to unregister.
- * @returns {ProxyHandler<H> | R} a transparent proxy for the held reference or whatever override was passed as `return` field of the options.
+ * @returns {R | ProxyHandler<H>} a transparent proxy for the held reference or whatever override was passed as `return` field of the options.
  */
 export const create = (
   hold,
