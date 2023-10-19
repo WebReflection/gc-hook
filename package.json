@@ -1,7 +1,7 @@
 {
   "name": "gc-hook",
   "version": "0.1.0",
-  "description": "A simplified FinalizationRegistry approach that works",
+  "description": "A simplified FinalizationRegistry utility that works",
   "main": "./cjs/index.js",
   "scripts": {
     "build": "npm run cjs && npm run rollup:es && npm run rollup:index && npm run ts && npm run test",
