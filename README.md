@@ -2,6 +2,8 @@
 
 [![build status](https://github.com/WebReflection/gc-hook/actions/workflows/node.js.yml/badge.svg)](https://github.com/WebReflection/gc-hook/actions) [![Coverage Status](https://coveralls.io/repos/github/WebReflection/gc-hook/badge.svg?branch=main)](https://coveralls.io/github/WebReflection/gc-hook?branch=main)
 
+<sup>**Social Media Photo by [Steve Johnson](https://unsplash.com/@steve_j) on [Unsplash](https://unsplash.com/)**</sup>
+
 A simplified [FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) utility that works:
 
   * it does the right thing by never leaking the reference meant to be notified
