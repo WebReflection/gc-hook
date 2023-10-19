@@ -1,0 +1,1 @@
+const e=new FinalizationRegistry((([e,r])=>e(r))),r=Object.create(null),t=(t,n,{return:i,token:o=t}=r)=>{const s=i||new Proxy(t,r);return e.register(s,[n,t],o),s},n=r=>e.unregister(r);export{t as create,n as drop};

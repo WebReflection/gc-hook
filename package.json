@@ -1,0 +1,53 @@
+{
+  "name": "gc-hook",
+  "version": "0.0.0",
+  "description": "A simplified FinalizationRegistry approach that works",
+  "main": "./cjs/index.js",
+  "scripts": {
+    "build": "npm run cjs && npm run rollup:es && npm run rollup:index && npm run ts && npm run test",
+    "cjs": "ascjs esm cjs",
+    "rollup:es": "rollup --config rollup/es.config.js && sed -i.bck 's/^var /self./' es.js && rm -rf es.js.bck",
+    "rollup:index": "rollup --config rollup/index.config.js",
+    "test": "c8 node --expose-gc test/index.js",
+    "ts": "tsc -p .",
+    "coverage": "mkdir -p ./coverage; c8 report --reporter=text-lcov > ./coverage/lcov.info"
+  },
+  "keywords": [
+    "FinalizationRegistry",
+    "simple",
+    "GC",
+    "Proxy"
+  ],
+  "author": "Andrea Giammarchi",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "ascjs": "^6.0.2",
+    "c8": "^8.0.1",
+    "rollup": "^4.1.4",
+    "typescript": "^5.2.2"
+  },
+  "module": "./esm/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./esm/index.js",
+      "default": "./cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "unpkg": "es.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/gc-hook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WebReflection/gc-hook/issues"
+  },
+  "homepage": "https://github.com/WebReflection/gc-hook#readme"
+}
