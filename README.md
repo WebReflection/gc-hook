@@ -71,7 +71,9 @@ create(
     // and it's returned from the create(...) function
     return,
     // allow dropping from the registry via something
-    // different from the held value itself
+    // different from the held value itself.
+    // if token is explicitly `false` then no token is used
+    // to register the retained value.
     token = hold
   } = {}
 );
