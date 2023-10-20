@@ -1,7 +1,10 @@
 // (c) Andrea Giammarchi - ISC
 
 const registry = new FinalizationRegistry(
-  ([onGarbageCollected, held]) => onGarbageCollected(held)
+  ([onGarbageCollected, held, debug]) => {
+    if (debug) console.debug(`Held value ${String(held)} not relevant anymore`);
+    onGarbageCollected(held);
+  }
 );
 
 const handler = Object.create(null);
@@ -11,18 +14,18 @@ const handler = Object.create(null);
  * @template H,R
  * @param {H} hold the reference to retain in memory until the returned value is not collected.
  * @param {(held:H) => void} onGarbageCollected the callback to invoke once the returned value is collected.
- * @param {{return?:R, token?:H | false}} [options] optionally override the returned value or the token to unregister.
+ * @param {{debug?: true, return?:R, token?:H | false}} [options] optionally override the returned value or the token to unregister. If `debug` is true it will log once FinalizationRegistry kicked in.
  * @returns {R | ProxyHandler<H>} a transparent proxy for the held reference or whatever override was passed as `return` field of the options.
  */
 const create = (
   hold,
   onGarbageCollected,
-  { return: R, token = hold } = handler
+  { debug, return: R, token = hold } = handler
 ) => {
   // if no reference to return is defined,
   // create a proxy for the held one and register that instead.
   const target = R || new Proxy(hold, handler);
-  const args = [target, [onGarbageCollected, hold]];
+  const args = [target, [onGarbageCollected, hold, !!debug]];
   if (token !== false) args.push(token);
   // register the target reference in a way that
   // the `onGarbageCollected(held)` callback will eventually notify.

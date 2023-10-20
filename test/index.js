@@ -93,7 +93,7 @@ setTimeout(() => {
               value => {
                 triggered = value === retain1;
               },
-              { token: false }
+              { token: false, debug: true }
             );
             setTimeout(() => {
               gc();

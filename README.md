@@ -68,13 +68,16 @@ create(
   // optional properties:
   {
     // override the light ProxyHandler<hold>
-    // and it's returned from the create(...) function
+    // and it's returned from the create(...) function.
     return,
     // allow dropping from the registry via something
     // different from the held value itself.
     // if token is explicitly `false` then no token is used
     // to register the retained value.
-    token = hold
+    token = hold,
+    // if explicitly set as `true` it will `console.debug`
+    // the fact the held value is not retained anymore out there.
+    debug = false,
   } = {}
 );
 
