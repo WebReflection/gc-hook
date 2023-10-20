@@ -1,4 +1,6 @@
-if (!globalThis.gc) throw new Error('This env cannot deal with GC operations');
+if (!globalThis.gc) globalThis.gc = Bun.gc;
+
+const WAIT = 50;
 
 const { create, drop } = require('../cjs');
 
@@ -99,12 +101,14 @@ setTimeout(() => {
               gc();
               setTimeout(() => {
                 gc();
-                console.assert(triggered, 'false token');
-              });
-            }, 300);
-          }, 300);
-        });
-      });
-    });
-  });
-});
+                setTimeout(() => {
+                  console.assert(triggered, 'false token');
+                }, WAIT);
+              }, WAIT);
+            }, WAIT);
+          }, WAIT);
+        }, WAIT);
+      }, WAIT);
+    }, WAIT);
+  }, WAIT);
+}, WAIT);
