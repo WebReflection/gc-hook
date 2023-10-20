@@ -1,3 +1,5 @@
+if (!globalThis.gc) throw new Error('This env cannot deal with GC operations');
+
 const { create, drop } = require('../cjs');
 
 const retain1 = globalThis;
@@ -83,7 +85,24 @@ setTimeout(() => {
           retained = void 0;
           console.assert(drop(token) && ok, 'unregister(token) && ok');
           gc();
-          setTimeout(gc, 300);
+          setTimeout(() => {
+            gc();
+            let triggered = false;
+            create(
+              retain1,
+              value => {
+                triggered = value === retain1;
+              },
+              { token: false }
+            );
+            setTimeout(() => {
+              gc();
+              setTimeout(() => {
+                gc();
+                console.assert(triggered, 'false token');
+              });
+            }, 300);
+          }, 300);
         });
       });
     });
