@@ -47,50 +47,6 @@ setTimeout(() => {
 });
 ```
 
-## API
-
-```js
-// returns a ProxyHandler<hold> or whatever
-// the `return` option wants to return.
-// The returned reference is the one that
-// notifies the GC handler once destroyed
-// or not referenced anymore in the consumer code.
-create(
-  // the reference or primitive to keep in memory
-  // until the returned value is used. It can be
-  // a primitive, but it requires `token = false`,
-  // or any reference to hold in memory.
-  hold,
-  // a callback that will receive the held value
-  // whenever its Proxy or wrapper is not referenced
-  // anymore in the program using it.
-  onGarbageCollected,
-  // optional properties:
-  {
-    // override the light ProxyHandler<hold>
-    // and it's returned from the create(...) function.
-    return,
-    // allow dropping from the registry via something
-    // different from the held value itself.
-    // if token is explicitly `false` then no token is used
-    // to register the retained value.
-    token = hold,
-    // if explicitly set as `true` it will `console.debug`
-    // the fact the held value is not retained anymore out there.
-    debug = false,
-  } = {}
-);
-
-// Returns `true` if the `token` successfully
-// unregistered the proxy reference from the registry.
-drop(
-  // it's either the held value waiting to be passed
-  // to the GC callback, or the explicit `token` passed
-  // while creating the thin wrapper around it.
-  token
-);
-```
-
 ## Use Cases
 
 <details>
@@ -229,3 +185,47 @@ The only and most important thing is to never return something part of the `held
 
   </div>
 </details>
+
+## API
+
+```js
+// returns a ProxyHandler<hold> or whatever
+// the `return` option wants to return.
+// The returned reference is the one that
+// notifies the GC handler once destroyed
+// or not referenced anymore in the consumer code.
+create(
+  // the reference or primitive to keep in memory
+  // until the returned value is used. It can be
+  // a primitive, but it requires `token = false`,
+  // or any reference to hold in memory.
+  hold,
+  // a callback that will receive the held value
+  // whenever its Proxy or wrapper is not referenced
+  // anymore in the program using it.
+  onGarbageCollected,
+  // optional properties:
+  {
+    // override the light ProxyHandler<hold>
+    // and it's returned from the create(...) function.
+    return,
+    // allow dropping from the registry via something
+    // different from the held value itself.
+    // if token is explicitly `false` then no token is used
+    // to register the retained value.
+    token = hold,
+    // if explicitly set as `true` it will `console.debug`
+    // the fact the held value is not retained anymore out there.
+    debug = false,
+  } = {}
+);
+
+// Returns `true` if the `token` successfully
+// unregistered the proxy reference from the registry.
+drop(
+  // it's either the held value waiting to be passed
+  // to the GC callback, or the explicit `token` passed
+  // while creating the thin wrapper around it.
+  token
+);
+```
