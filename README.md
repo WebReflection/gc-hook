@@ -163,12 +163,12 @@ export const createComplexHeld = ref => {
   };
 
   const wrap = function (...args) {
-    return ffi.apply(reference, args);
+    return ffi.apply(ref, args);
   };
 
   wrap.destroy = () => {
     drop(held);
-    ffi.gc.decreaseRefCounting(reference);
+    ffi.gc.decreaseRefCounting(ref);
   };
 
   const held = {
