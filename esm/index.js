@@ -11,11 +11,12 @@ const handler = Object.create(null);
 
 /**
  * Register a generic reference to hold in memory, returning either an explicit replacement for it, if specified as optional extra option, or just a `ProxyHandler<hold>` to allow the GC to collect such proxy later on.
- * @template H,R
+ * @template {object} H
+ * @template R
  * @param {H} hold the reference to retain in memory until the returned value is not collected.
  * @param {(held:H) => void} onGarbageCollected the callback to invoke once the returned value is collected.
  * @param {{debug?: true, return?:R, token?:H | false}} [options] optionally override the returned value or the token to unregister. If `debug` is true it will log once FinalizationRegistry kicked in.
- * @returns {R | ProxyHandler<H>} a transparent proxy for the held reference or whatever override was passed as `return` field of the options.
+ * @returns {R | ProxyHandler<typeof hold>} a transparent proxy for the held reference or whatever override was passed as `return` field of the options.
  */
 export const create = (
   hold,

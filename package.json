@@ -23,9 +23,9 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "ascjs": "^6.0.2",
+    "ascjs": "^6.0.3",
     "c8": "^8.0.1",
-    "rollup": "^4.1.4",
+    "rollup": "^4.3.0",
     "typescript": "^5.2.2"
   },
   "module": "./esm/index.js",
