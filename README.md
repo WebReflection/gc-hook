@@ -106,7 +106,7 @@ This use case was designed after *pyodide* Proxy and GC dance around passed refe
   <summary><strong>Primitives</strong></summary>
   <div markdown=1>
 
-In case you need to relate a specific object to a unique id (*coindindent* use case) and you don't need to ever unregister the held reference / id internally:
+In case you need to relate a specific object to a unique id (*[coincident](https://github.com/WebReflection/coincident)* use case) and you don't need to ever unregister the held reference / id internally:
 
 ```js
 import { create } from 'gc-hook';
@@ -115,7 +115,7 @@ const onGC = id => {
   console.log(id, 'not needed anymore');
 };
 
-// id can be any primitive in here
+// id can be any primitive in here and ref must be used as return
 export const relate = (id, ref) => {
   return create(id, onGC, { token: false, return: ref });
 };

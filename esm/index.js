@@ -40,9 +40,3 @@ export const create = (
  * @returns {boolean} `true` if successfully unregistered.
  */
 export const drop = token => registry.unregister(token);
-
-// TODO: this is probably overkill / unnecessary
-// const registered = new WeakMap;
-// if (registered.has(keep))
-//   unregister(registered.get(keep));
-// registered.set(keep, token || keep);
