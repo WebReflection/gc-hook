@@ -3,11 +3,21 @@ if (!globalThis.gc) globalThis.gc = Bun.gc;
 const WAIT = 50;
 
 const { create, drop } = require('../cjs');
+const { alloc, dealloc, ref } = require('../cjs/memory');
 
 const retain1 = globalThis;
 const retain2 = {a: 1};
 const retain3 = function () {};
 const result = [];
+
+const ptr = alloc(retain1);
+console.assert(alloc(retain1) === ptr, 'alloc');
+console.assert(alloc(retain2) !== ptr, 'new alloc');
+console.assert(ref(ptr) === retain1, 'ref');
+console.assert(dealloc(ptr), 'dealloc');
+console.assert(!ref(ptr), '!ref');
+console.assert(!dealloc(ptr), '!dealloc');
+console.assert(dealloc(alloc(retain2)), 'new dealloc');
 
 let release1 = create(
   retain1,
