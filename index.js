@@ -7,25 +7,32 @@ const registry = new FinalizationRegistry(
   }
 );
 
-const handler = Object.create(null);
+const nullHandler = Object.create(null);
 
 /**
- * Register a generic reference to hold in memory, returning either an explicit replacement for it, if specified as optional extra option, or just a `ProxyHandler<hold>` to allow the GC to collect such proxy later on.
- * @template {object} H
- * @template R
- * @param {H} hold the reference to retain in memory until the returned value is not collected.
- * @param {(held:H) => void} onGarbageCollected the callback to invoke once the returned value is collected.
- * @param {{debug?: true, return?:R, token?:H | false}} [options] optionally override the returned value or the token to unregister. If `debug` is true it will log once FinalizationRegistry kicked in.
- * @returns {R | ProxyHandler<typeof hold>} a transparent proxy for the held reference or whatever override was passed as `return` field of the options.
+ * @template {unknown} H
+ * @typedef {Object} GCHookOptions
+ * @prop {boolean} [debug=false] if `true`, logs values once these can get collected.
+ * @prop {ProxyHandler<object>} [handler] optional proxy handler to use instead of the default one.
+ * @prop {H} [return=H] if specified, overrides the returned proxy with its value.
+ * @prop {unknown} [token=H] it's the held value by default, but it can be any other token except the returned value itself.
+ */
+
+/**
+ * @template {unknown} H
+ * @param {H} hold the reference to hold behind the scene and passed along the callback once it triggers.
+ * @param {(held:H) => void} onGarbageCollected the callback that will receive the held value once its wrapper or indirect reference is no longer needed.
+ * @param {GCHookOptions<H>} [options] an optional configuration object to change some default behavior.
  */
 const create = (
   hold,
   onGarbageCollected,
-  { debug, return: R, token = hold } = handler
+  { debug, handler, return: r, token = hold } = nullHandler
 ) => {
   // if no reference to return is defined,
   // create a proxy for the held one and register that instead.
-  const target = R || new Proxy(hold, handler);
+  /** @type {H} */
+  const target = r || new Proxy(hold, handler || nullHandler);
   const args = [target, [onGarbageCollected, hold, !!debug]];
   if (token !== false) args.push(token);
   // register the target reference in a way that

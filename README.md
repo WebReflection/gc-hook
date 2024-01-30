@@ -112,12 +112,16 @@ In case you need to relate a specific object to a unique id (*[coincident](https
 import { create } from 'gc-hook';
 
 const onGC = id => {
-  console.log(id, 'not needed anymore');
+  console.log(id.valueOf(), 'not needed anymore');
 };
 
 // id can be any primitive in here and ref must be used as return
 export const relate = (id, ref) => {
-  return create(id, onGC, { token: false, return: ref });
+  return create(
+    typeof id === 'string' ? new String(id) : new Number(id),
+    onGC,
+    { token: false, return: ref }
+  );
 };
 ```
 
@@ -131,7 +135,7 @@ export const relate = (id, ref) => {
 In case you need to relate a specific object to a unique id but you still would like to drop the reference from the *FinalizationRegistry* later on:
 
 ```js
-import { create } from 'gc-hook';
+import { create, drop } from 'gc-hook';
 
 const onGC = ({ id, time }) => {
   console.log(id, 'created at', time, 'not needed anymore');
@@ -140,7 +144,11 @@ const onGC = ({ id, time }) => {
 // id can be any primitive in here
 export const relate = (id, wrap) => {
   const token = { id, time: Date.now() };
-  return create(id, onGC, { token, return: wrap });
+  const hold = typeof id === 'string' ? new String(id) : new Number(id);
+  return {
+    value: create(hold, onGC, { token, return: wrap }),
+    drop: () => drop(token)
+  };
 };
 ```
 
@@ -206,12 +214,15 @@ create(
   onGarbageCollected,
   // optional properties:
   {
-    // override the light ProxyHandler<hold>
-    // and it's returned from the create(...) function.
-    return,
+    // if passed along, it will be used automatically
+    // to create the ProxyHandler<hold>.
+    handler = Object.create(null),
+    // override the otherwise automatically created Proxy
+    // for the `held` reference.
+    return = new Proxy(hold, handler),
     // allow dropping from the registry via something
-    // different from the held value itself.
-    // if token is explicitly `false` then no token is used
+    // different from the returned value itself.
+    // If this is explicitly `false`, no token is used
     // to register the retained value.
     token = hold,
     // if explicitly set as `true` it will `console.debug`
@@ -225,7 +236,7 @@ create(
 drop(
   // it's either the held value waiting to be passed
   // to the GC callback, or the explicit `token` passed
-  // while creating the thin wrapper around it.
+  // while creating the reference around it.
   token
 );
 ```
