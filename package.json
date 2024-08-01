@@ -1,6 +1,6 @@
 {
   "name": "gc-hook",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A simplified FinalizationRegistry utility that works",
   "main": "./cjs/index.js",
   "scripts": {
