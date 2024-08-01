@@ -10,6 +10,7 @@ const known = new WeakSet;
 export default literal => {
   for (const [key, value] of entries(literal)) {
     if (!known.has(value)) {
+      known.add(value);
       create(key, String, { debug, token, return: value });
     }
   }
