@@ -10,6 +10,7 @@
   },
   "include": [
     "esm/index.js",
-    "esm/memory.js"
+    "esm/memory.js",
+    "esm/track.js"
   ]
 }

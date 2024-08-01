@@ -8,7 +8,7 @@
 let i = 0;
 
 const ids = new Map;
-const values = new WeakMap;
+const values = new Map;
 
 /**
  * Create once a unique identifier that can easily travel or be serialized.

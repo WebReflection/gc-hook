@@ -2,7 +2,8 @@
 
 const registry = new FinalizationRegistry(
   ([onGarbageCollected, held, debug]) => {
-    if (debug) console.debug(`Held value ${String(held)} not relevant anymore`);
+    // "%cThis is a green text", "color:green"
+    if (debug) console.debug(`%c${String(held)}`, 'font-weight:bold', 'collected');
     onGarbageCollected(held);
   }
 );

@@ -24,9 +24,9 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "ascjs": "^6.0.3",
-    "c8": "^9.1.0",
-    "rollup": "^4.14.3",
-    "typescript": "^5.4.5"
+    "c8": "^10.1.2",
+    "rollup": "^4.19.2",
+    "typescript": "^5.5.4"
   },
   "module": "./esm/index.js",
   "type": "module",
@@ -40,6 +40,11 @@
       "types": "./types/memory.d.ts",
       "import": "./esm/memory.js",
       "default": "./cjs/memory.js"
+    },
+    "./track": {
+      "types": "./types/track.d.ts",
+      "import": "./esm/track.js",
+      "default": "./cjs/track.js"
     },
     "./package.json": "./package.json"
   },

@@ -2,14 +2,27 @@ import {nodeResolve} from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 
 
-export default {
-  input: './esm/index.js',
-  plugins: [
-    nodeResolve(),
-    terser()
-  ],
-  output: {
-    esModule: true,
-    file: './es.js',
+export default [
+  {
+    input: './esm/index.js',
+    plugins: [
+      nodeResolve(),
+      terser()
+    ],
+    output: {
+      esModule: true,
+      file: './es.js',
+    }
+  },
+  {
+    input: './esm/track.js',
+    plugins: [
+      nodeResolve(),
+      terser()
+    ],
+    output: {
+      esModule: true,
+      file: './track.js',
+    }
   }
-};
+];

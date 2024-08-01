@@ -194,6 +194,32 @@ The only and most important thing is to never return something part of the `held
   </div>
 </details>
 
+### gc-hook/track
+
+If you'd like to track one or more reference you can use `gc-hook/track` helper.
+
+All it does is to notify in console, via `console.debug`, that such reference has eventually be collected.
+
+```js
+// or use https://esm.run/gc-hook/track live
+import BUG_GC from 'gc-hook/track';
+
+// HINT: use a constant so that rollup or bundlers
+// can eventually remove all the dead code in production
+const D = true;
+
+// create any reference
+let test = { any: 'value' };
+
+// when debugging, pass an object literal to simplify
+// naming -> references convention
+D&&BUG_GC({ test });
+
+setTimeout(() => { test = null; });
+// now press the Collect Garbage button in devtools
+// and see the lovely message: **test** collected
+```
+
 ## API
 
 ```js
